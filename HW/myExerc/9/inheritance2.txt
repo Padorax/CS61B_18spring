@@ -1,0 +1,25 @@
+C level
+1.
+1) Dog(determined by the signature of Dog.maxDog)
+2) first line (When assign the second line, the compiler will ask"is a Dog a ShowDog?", the answer is not always, so our conservative compiler yells.)
+3)	Static	Dynamic
+o	Object	Dog
+d	Dog	Dog
+stuff	Object	Array
+
+2.An interface cannot extend a class.
+
+3.The interface is kind of an abstraction. We use the methods from interface, the implementation details is in downward class.
+When we inheritance a class, we want to add additional methods in the subclass.
+
+B level
+1.No. There is no default constructor available in 'Dog'
+public class Poodle extends Dog{
+ public Poodle(int x) {
+    super(x);
+ }
+}
+
+2.Cannot compile: Monkey cannot be converted to a Dog(we can only cast down or cast up)
+
+3.Compiles but Raise ClassCastException: Monkey cannot be cast to Dog

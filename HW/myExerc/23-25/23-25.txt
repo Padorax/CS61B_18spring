@@ -1,0 +1,53 @@
+Lec 23 Hashtalbe
+C
+all items share the same hashcode is equivalent to no hashcode.
+
+B
+1. 1) after setting string value, the corresponding hash value is not changed.
+2) It's possible to change the string(value, hash) after inserting it to the hashtable, thus it 'disappears' from the hash table.
+
+A
+1.? Doing modular inside the for loop?
+2.? Resize is too frequent and cost is too high.
+3.
+4. basically, so long as you match, a1*31+b1 = a2*31 +b2, which means (a1-a2)*31=b2-b1
+
+public void testHash()
+{
+    System.out.println("A:" + ((int)'A'));
+    System.out.println("B:" + ((int)'B'));
+    System.out.println("a:" + ((int)'a'));
+
+    System.out.println(hash("Aa".hashCode()));
+    System.out.println(hash("BB".hashCode()));
+    System.out.println(hash("Aa".hashCode()));
+    System.out.println(hash("BB".hashCode()));
+
+
+    System.out.println(hash("AaAa".hashCode()));
+    System.out.println(hash("BBBB".hashCode()));
+    System.out.println(hash("AaBB".hashCode()));
+    System.out.println(hash("BBAa".hashCode()));
+
+}
+
+A:65
+B:66
+a:97
+2260
+2260
+2260
+2260
+2019172
+2019172
+2019172
+2019172
+
+5. a.There are 26^2 = 676 buckets, so O(N/676) = O(N).
+b. O(logN)
+c. O(N)
+d. 0
+-1 is all 1-bits, and xoring 1 with any bit complements that bit. ~x - ~x = 0
+
+Lec 24 Heap
+

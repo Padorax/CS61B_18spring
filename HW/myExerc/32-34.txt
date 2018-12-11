@@ -1,0 +1,65 @@
+32
+B
+1.runtime for insersion sort is theta(N+K), where K is number of inversions. So insertion sort is extremely fast on arrays with a small number of inversions.
+best case: sorted ascending array eg. 1 2 3 4...N
+worst case: sorted descending array  eg. N N-1...3 2 1
+2.Runtime scenario for different algorithms
+1)
+Which method runs faster for an array with all keys identical, selection sort or insertion sort?
+Insertion sort will do O(1) work per element and visit O(n) elements for a total runtime of O(n). Selection sort always runs in time Θ(n2) regardless of the input structure, so its runtime will be quadratic.
+2)
+Which method runs faster for an array in reverse order, selection sort or insertion sort?
+both algorithms have quadratic runtime. The algorithms should actually have relatively comparable performance, since they'll make the same total number of comparisons.
+3)
+Suppose that we use insertion sort on a randomly ordered array where elements have only one of three values. Is the running time linear, quadratic, or something in between?
+This should take quadratic time (time Θ(n2)). Take just the elements in the back third of the array. About a third of these elements will be 1's, and in order to insert them into the sorted sequence they'd need to be moved above 2/3's of the way down the array. Therefore, the work done would be at least (n / 3)(2n / 3) = 2n2 / 9, which is quadratic.
+4)
+What is the maximum number of times during the execution of Quick.sort() that the largest item can be exchanged, for an array of length N?
+The maximum number cannot be passed over more times than there are spaces available, since it should always be approaching its right position. So, going from being the first to the last value spot, it would be exchanged N-1 times. 
+Eg. When the array has size 1, the largest element can't be moved any more, so the maximum number of moves would be N - 1.
+5)
+About how many compares will quick.sort() make when sorting an array of N items that are all equal?
+This really depends on the implementation of Quick.sort(). Quicksort with ternary partitioning would only do O(n) total work because all values equal to the pivot are excluded in the recursive calls. If this isn't done, then your analysis would be correct.
+When drawing out the quick sort , a triangle can be drawn around the compared objects at every phase, that is N tall and N wide, the area of this would equal the number of compares performed, which would be (N^2)/2
+
+33
+C
+1, the deeper the recursive call, the worse. So the leftmost pivot always land on the left instead of middle--almost sorted array
+eg. 1 2 4 5 8 9
+B
+1.recursive depth of quicksort:
+best-theta(logN), worst-theta(N), avg-theta(logN)
+2.
+A
+
+34
+C
+1.
+a) yes(16could be the traveller now, everything left is in order);
+N (12,17)(7,13),(16,23),(22,24)->(7,12,13,17),(16,23),(22,24);
+Y(7,12,13 could be the 1st pivot;);
+Y
+b)N;N;N;N
+c)N;N;Y;Y
+
+Ans: a) YYYY; b)NNYY; c) NNYN
+
+2.
+The most likely reason: quicksort is not stable, i.e. equal entries can change their relative position during the sort; among other things, this means that if you sort an already sorted array, it may not stay unchanged.
+
+Since primitive types have no identity (there is no way to distinguish two ints with the same value), this does not matter for them. But for reference types, it could cause problems for some applications. Therefore, a stable merge sort is used for those.
+
+OTOH, a reason not to use the (guaranteed n*log(n)) stable merge sort for primitive types might be that it requires making a clone of the array. For reference types, where the referred objects usually take up far more memory than the array of references, this generally does not matter. But for primitive types, cloning the array outright doubles the memory usage.
+------------------------------------------------------------
+Arrays#Sort() for object arrays now uses TimSort, which is a hybrid of MergeSort and InsertionSort. On the other hand, Arrays#sort() for primitive arrays now uses Dual-Pivot QuickSort. These changes were implemented starting in Java SE 7.
+
+------------------------------------------------------------
+"If a programmer is using objects, maybe space is not a critically important consideration and the extra space used by a merge sort maybe not a problem. And if a programmer is using primitive types, maybe the performance is the most important thing so they use quick sort."
+
+B
+1.
+a)  Y N N N N
+Ans YYYNN
+for selection sort, we will swap the current item with the selected smallest item so 14 will be after 10
+
+b)	

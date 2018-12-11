@@ -1,0 +1,16 @@
+C level
+1.
+1) Dog(determined by the signature of Dog.maxDog)
+2) first line (When assign the second line, the compiler will ask"is a Dog a ShowDog?", the answer is not always, so our conservative compiler yells.)
+3)	Static	Dynamic
+o	Object	Dog
+d	Dog	Dog
+stuff	Object	Array
+
+2.An interface cannot extend a class.
+
+3.The interface is kind of an abstraction. We use the methods from interface, the implementation details is in downward class.
+When we inheritance a class, we want to add additional methods in the subclass.
+
+B level
+1.

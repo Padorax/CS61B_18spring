@@ -1,0 +1,152 @@
+Lec 29
+
+C
+1.
+public int distTo(int w) {
+	return disTo[w];
+}
+
+public Iterable<int> pathTo(int w) {
+	Stack<integer> path = new Stack();
+	while (!pathTo[w]) {
+		path.push(pathTo[w]);
+		w = pathTo[w];
+	}	
+	path.push(0);
+	return path;//Stack implements Iterable interface
+}
+
+2. A C D F H E B G I
+
+3. T(does not affect relative relationship of dist from source)
+
+4. F
+
+B
+1.
+a) First ,distTo[3] = 0 so 3 is starting vertex.
+ Then there is no need to run Dijkstra from the very begining. Since 2 is dequed, 2 is fixed/added to the SPT, (every node in 2's path before is also fixed since its a subproblem of 2). 
+Since Dijkstra is deleting ndoes in increasing order of distTo, we can directly get: 3 -> 0 -> 10 -> 5 -> 2
+b) 2's edge is already relaxed, so according to min distTo, the next node to be dequed is 4. Turn's out 4-6(13 -> 7+4=11), 4-7(12 -> 7+3=10), 4-8(9 -> 7+1), 4-9(inf -> 7+15) needs to be relaxed.
+
+#################################
+Suppose we deque and relax node c1, it means all other nodes m in queue are furtherfrom source compared to c1, i.e, disTo(c1) < disTo(m) for all m in queue. In next deque, if the nearest node c2 comes from c1, disTo(c2) = distTo(c1) + edgeWeight(c1, c2) > distTo(c1); if the nearest node c2 does not come after c1, then it means c2 belongs to m, so disTo(c2) > distTo(c1).(Otherwise we will deque c2 not c1 in the last deque) So each time we deque, the corresponding distTo is increasing.
+#################################
+
+2.
+a) increasing order of distTo, we get 10-1-5-4
+b) Node 7 has incoming edges from node 4, 5; since node 5 is already dequede,and now edgeTo[7] is 4:  node4 must first be relaxed by node5(get dist 7+y), then re-relaxed by node 4(get dist 11+x). So, 11+x = 19, 11+x <= 7+y. So x = 8, y > 12.
+d) 2(13 is the smallest after 11)
+e) relax 2: 3: 23-> 20, 6: 36-> 35
+
+3.Dijkstra works well for positive weight edges as once a node has the smallest distance from source and is dequed, it is added to the SPT and any relaxation later will only add on its distance. However, for negative edges, it's possible previous dequeded node can have less distance via longer paths.
+
+----------------------------------------COPIED------------------------
+Note, that Dijkstra works even for negative weights, if the Graph has no negative cycles, i.e. cycles whose summed up weight is less than zero.
+
+Of course one might ask, why in the example made by templatetypedef Dijkstra fails even though there are no negative cycles, infact not even cycles. That is because he is using another stop criterion, that holds the algorithm as soon as the target node is reached (or all nodes have been settled once, he did not specify that exactly). In a graph without negative weights this works fine.
+
+If one is using the alternative stop criterion, which stops the algorithm when the priority-queue (heap) runs empty (this stop criterion was also used in the question), then dijkstra will find the correct distance even for graphs with negative weights but without negative cycles.
+
+However, in this case, the asymptotic time bound of dijkstra for graphs without negative cycles is lost. This is because a previously settled node can be reinserted into the heap when a better distance is found due to negative weights. This property is called label correcting.
+
+
+Lec30
+
+UNIQUENESS OF MST
+Given a graph G=(V,E)G=(V,E) and let M=(V,F)M=(V,F) be a minimum spanning tree (MST) in GG.
+
+If there exists an edge e={v,w}∈E∖Fe={v,w}∈E∖F with weight w(e)=mw(e)=m such that adding ee to our MST yields a cycle CC, and let mm also be the lowest edge-weight from F∩CF∩C, then we can create a second MST by swapping an edge from F∩CF∩C with edge-weight mm with ee. Thus we do not have uniqueness.
+
+
+C
+1.
+a) b-d d-g e-f c-h g-c f-g (e-g add circle so abandon)  g-h
+Correct: b-d d-g e-f c-h f-h c-g a-h
+b)a-h h-c h-f e-f c-g d-g b-d
+
+2.Prim's and Kruskal's algorithm output a minimum spanning tree for connected and "undirected" graph. If it is not connected, we can tweak them to output minimum spanning forests.
+
+In Prim's algorithm, we divide the graph in two sets of vertices. One set of the explored vertices which have already formed MST (Set1) and another set of unexplored vertices which will eventually join the first set to complete "spanning"(Set2). At each instant, we select a minimum weighted edge in the cut joining the two disjoint sets. If there is no directed edge from explored nodes of MST to remaining unexplored, the algorithm gets stuck even though there are edges from unexplored nodes to explored nodes in MST.
+
+In Kruskal's algorithm, the idea is to sort the edges in ascending order by their weight and pick them up in order and include them in MST explored nodes/edges if they donot already form a cycle with explored nodes. This is done by Union-Find DS. But detection of cycle for directed graphs fails with this method. For ex: Graph containing edges [1->2] [2->3] [1->3] will be reported to contain a cycle with the Union-Find method.
+
+So Prim's fails because it assumes, every node is reachable from every node which though valid for undirected graphs may not be true for digraphs. Kruskal fails because of failure to detect cycles and sometimes it is essential to add edges making cycles to satisfy "minimum" weighted property of MST.
+
+Also, in case of digraphs, MST doesn't make complete sense. Its equivalent for digraphs is "minimum spanning arborescence" which will produce a tree where every vertex can be reached from a single vertex.
+
+3.Correct. Because cost of every MST increases by (n-1)*k.
+
+4.Correct. The relative order of each does not change after all multiplied by the same constant.
+
+5.
+For every graph, there always exists an MST that is an SPT.(F)
+
+6.If the edge weights in your graph are all different from each other, then your graph has a unique minimum spanning tree, so Kruskal's and Prim's algorithms are guaranteed to return the same tree.
+If the edge weights in your graph are not all different (as in your example, where (A,B)(A,B) and (D,E)(D,E) both have weight 9), then neither algorithm is necessarily deterministic. They both have steps of the form "choose the lowest-weight edge that satisfies some condition" that might yield ambiguous results. For example, in the extreme case where all edges have the same weight, either algorithm could conceivably return any of the graph's spanning trees. That is, Prim's algorithm might yield a different minimum spanning tree than Kruskal's algorithm in this case, but that's because either algorithm might yield a different minimum spanning tree than (a different implementation of) itself!
+
+B
+1.Proof by contradiction works here. Suppose you have a minimum spanning tree including the maximum edge. If you remove that edge you have two components no longer connected from each other. Every vertex is in one component or the other. There is a cycle including the maximum edge. Start on a vertex at one side of the maximum edge and move along the cycle. Because you will eventually cycle round to the other side of the maximum edge in the other component you will find - before then - an edge which has one vertex in one of the disconnected components and one vertex in another of the disconnected components. Since the components are disconnected that edge is not in the minimum spanning tree. By adding it to the tree you reconnect the components and create a minimum spanning tree with smaller weight than you started with - so you original minimum spanning tree was not minimum.
+
+2.
+a) 1 2 3 5 6 7 8 12
+b) w <= 8
+c)a c h g i e b d f
+ 6 1 3 2 5 7 8 12
+d)
+
+3.
+a) using crossing edge property, keep x,y,z in the same set as we cannot compare its value
+10 20 30 40 50 100
+(50: top row in a set, bottom row nodes another set
+(100: node a in a set, all remaining nodes another set
+
+make x, y, z a crossing edge(minimum)
+b)
+let  node F in a set, others another set
+then as long as x<=110, FG is ensured to be in MST
+c)
+let node BCD in a set, others another set
+as long as y<=60, DE must be in MST.
+d) let ABFC in a set...
+as long as z<=80, BC must be in MST.
+
+4.
+a)The shortest edge must be in MST.(let the two endnode be in 2 sets, the shortest edge is a crossing edge and since it's shortest...)
+b) Yes. Consider a graph with 2 vertice, 1 edge. Or: If the graph itself is a tree then we need to include all of its n-1 edges in the MST, so the max weight edge cannot be excluded.
+The heaviest edge is not chosen iff it's on a circle.
+c) I guess no
+
+5.
+True
+Edge weight grows in order
+
+Smaller edges will always be picked ala it doesnot cause cycle, so node will always be in the same subtree with its close nbr. If edge will cause cycle, that means node and its nbr is already in the same subtree.
+
+6.
+
+7.
+
+8.
+
+A
+1.
+Minimum spanning tree. For simplicity, we’ll assume all edge weights are distinct.
+Find the unique path between v and w in the MST. This takes O(V ) time using BFS or DFS
+because there are only V − 1 edges in the MST subgraph. We claim that the MST in G is
+the same as the MST in G 0 if and only if every edge on the path has length less than c.
+• If any edge on the path has weight greater than c, we can decrease the weight of the
+MST by swapping the largest weight edge on the path with v-w. Hence weight of the
+MST for G 0 is strictly less than the weight of the MST for G.
+• If the weight of v-w is larger than any edge on the path between v and w, then the cycle
+property asserts that v-w is not in the MST for G 0 (because it is the largest weight edge
+on the cycle consisting of the path from v to w plus the edge v-w). Thus, the MST for
+G is also the MST for G 0 .
+
+2.
+
+3. Just cut property, see notes
+
+4.
+
+

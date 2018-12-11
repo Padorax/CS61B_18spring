@@ -1,0 +1,13 @@
+C
+1. It needs to implement the methods with 'abstract' in front of them.
+Yes it has to. Unless the methods are implemented by other class that inherites the sub interface.
+2. No. An abstract class can be subclassed, not superclassed.
+3. A class that is not in a named package is in an unnamed package(default package). Thus the full class name is Main.
+It's impossible to import classes from an unnamed package.
+Unnamed package is usually for test coding or beginners.
+
+B
+1. Yes.
+Tree bark.
+ A class can extends only one class but can implements multiple interfaces. A class can also have extends and implements at the same time.
+(Reason: multiple interfaces means we can classify this class into different types; However, if we inheritant from multiple superclass, we are doing some kinds of 'Hybration' between different speicies, which is not allowed.)

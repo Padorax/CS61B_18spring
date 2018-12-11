@@ -1,0 +1,4 @@
+20 Disjoint sets
+QuickFind, QuickUnion, WeightedQuickUnion, Weighted Quick Union with Path Compression 
+
+C level

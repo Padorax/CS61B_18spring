@@ -1,0 +1,4 @@
+TETile t1 = Tileset.WALL;
+TETile t2 = Tileset.WALL;
+//world[0][1] = Tileset.WALL;
+t1 == t2;  //TRUE
